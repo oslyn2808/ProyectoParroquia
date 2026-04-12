@@ -439,6 +439,35 @@ public class RegistrarFormularioFrame extends JFrame {
                 mostrarError("Debe ingresar al menos una persona participante.");
                 return;
             }
+            
+            // VALIDACION DE CEDULAS DUPLICADAS //
+            
+            // 1. Recolectamos todas las cedulas
+            List<String> todasCedulas = new ArrayList<>();
+            for (PersonaParticipante p : personas) {
+            	String ced = p.getDocumentoIdentidad();
+            	if (ced != null && !ced.trim().isEmpty()) {
+            		todasCedulas.add(ced.trim());
+            	}
+            }
+            
+            // 2. Obtener las cedulas duplicadas (para nuevo formulario, idFormularioExcluir = null)
+            if (!todasCedulas.isEmpty()) {
+            	List<String> duplicadas = service.getCedulaDuplicadas(todasCedulas, null);
+            	
+            	//En caso de que hayan duplicadas, mostramos mensaje de error con la informacion detallada
+            	if (!duplicadas.isEmpty()) {
+            		StringBuilder mensaje = new StringBuilder("No se puede registrar el formulario porque las siguientes personas "
+            				+ "ya tienen una ayuda activa en otro formulario:\n");
+            		for (String ced : duplicadas) {
+            			String info = service.obtenerInfoPersonaPorCedula(ced);
+            			mensaje.append("• Cédula ").append(ced).append(": ").append(info).append("\n");
+            		}
+            		mensaje.append("\nPor favor, verifique los datos.");
+            		mostrarError(mensaje.toString());
+            		return; //Cancelamos el guardado
+            	}
+            }
             f.setPersonas(personas);
 
             // 7. GENERAR NUMERO DE FICHA

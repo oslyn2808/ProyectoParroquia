@@ -1,6 +1,8 @@
 package accesoDatos;
 
 import entidades.Formulario;
+import entidades.PersonaParticipante;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -49,5 +51,23 @@ public class FormularioDAO extends GenericDAO<Formulario> {
         } finally {
             em.close();
         }
+    }
+    
+    /**
+     * Buscar persosnas por documento de identidad (IMPORTANTE para validacion)
+     */
+    public List<PersonaParticipante> buscarPersonaPorDocumento(String documento){
+    	
+    	EntityManager em = JPAUtil.getEntityManager();
+    	try {
+    		String jpql = "SELECT p FROM PersonaParticipante p " +
+    					  "JOIN FETCH p.formulario f " +
+    					  "WHERE p.documentoIdentidad = :doc";
+    		return em.createQuery(jpql, PersonaParticipante.class)
+    				.setParameter("doc", documento)
+    				.getResultList();
+    	} finally {
+    		em.close();
+    	}
     }
 }

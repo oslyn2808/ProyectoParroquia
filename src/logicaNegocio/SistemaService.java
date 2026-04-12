@@ -8,6 +8,7 @@ import accesoDatos.UsuarioDAO;
 import accesoDatos.FormularioDAO;
 import accesoDatos.AdendumExpedienteDAO;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -98,7 +99,6 @@ public class SistemaService {
     }
 
     // ELIMINAR FORMULARIO //
- // ELIMINAR FORMULARIO //
     public String eliminarFormulario(Formulario f) {
         if (f == null) return "Formulario inválido.";
         try {
@@ -113,7 +113,51 @@ public class SistemaService {
             return "Error al eliminar el formulario: " + e.getMessage();
         }
     }
+    
+    // VALIDAR SI UNA CEDULA EXISTE EN OTRO FORMULARIO
+    public boolean existePersonaFormulario(String documentoIdentidad, Integer idFormularioExcluir) {
+    	
+    	List<PersonaParticipante> personas = formularioDAO.buscarPersonaPorDocumento(documentoIdentidad);
+    	for (PersonaParticipante p : personas) {
+    		Formulario f = p.getFormulario();
+    		if (idFormularioExcluir == null || !f.getIdFormulario().equals(idFormularioExcluir)) { //este metodo es en caso de una futura implementacion
+    																							   //de un EDITAR formulario
+    			    																							 
+    			return true; //Si la cedula ya esta registrada en algun formulario diferente al que se exluye, devuelve true
+    		}
+    	}
+    	
+    	return false; //si no encuentra ninguna coincidencia, devuelve false
+    }
+    
+    //OBTENIDO UNA LISTA DE CEDULAS, DEVUELVE LAS QUE YA ESTAN DUPLICADAS
+    public List<String> getCedulaDuplicadas(List<String> cedulas, Integer idFormularioExcluir) {
+    	
+    	List<String> duplicadas = new ArrayList<>();
+    	for  (String ced : cedulas) {					//llamamos al metodo para pasarle la cedula 
+    		if (ced != null && !ced.trim().isEmpty() && existePersonaFormulario(ced, idFormularioExcluir)) {
+    			duplicadas.add(ced); //y si esta duplicada, se guarda en esta lista temporal.
+    		}
+    	}
+    	
+    	return duplicadas; //nos sirve para saber cuales son las cedulas que estan duplicadas.
+    }
+    
+    //OBTENER LEGIBLE DE UNA PERSONA POR SU CEDULA
+    public String obtenerInfoPersonaPorCedula(String documentoIdentidad) {
+    	List<PersonaParticipante> personas = formularioDAO.buscarPersonaPorDocumento(documentoIdentidad); //busca las personas con esa cedula 
+    	if (!personas.isEmpty()) {
+    		PersonaParticipante p = personas.get(0); //toma la primera persona
+    		Formulario f = p.getFormulario(); //obtenemos el formulario asociado a esa persona
+    		return p.getNombreCompleto() + " (Parroquia: " + f.getParroquia() 
+    		+ ", Ficha: " + f.getFichaNumero() + ")"; //mandamos mensaje 
+    	}
+    	
+    	return "Informacion no disponible"; //si no se encuentra ninguna persona, se retorna esto.
+    }
 
+    
+    
     ///
     ///////////////////////////////////////////////
     /**
