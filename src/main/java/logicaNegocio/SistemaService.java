@@ -4,10 +4,11 @@ import entidades.AdendumExpediente;
 import entidades.Formulario;
 import entidades.PersonaParticipante;  // ← Asegúrate de importar PersonaParticipante
 import entidades.Usuario;
+import entidades.Parroquia;
 import accesoDatos.UsuarioDAO;
 import accesoDatos.FormularioDAO;
 import accesoDatos.AdendumExpedienteDAO;
-
+import accesoDatos.ParroquiaDAO;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
