@@ -20,7 +20,7 @@ public class MenuPrincipalFrame extends JFrame {
         add(panelSuperior(), BorderLayout.NORTH);
         add(panelLateral(), BorderLayout.WEST);
 
-        // Panel de contenido SIMPLE (sin tarjeta)
+        // Panel de contenido SIMPLE 
         panelContenido = new JPanel(new BorderLayout());
         panelContenido.setBackground(Estilos.FONDO);
         panelContenido.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
@@ -79,7 +79,7 @@ public class MenuPrincipalFrame extends JFrame {
 
         panelLateral.add(menuPanel, BorderLayout.CENTER);
 
-        // Panel SUR para el botón de cierre de sesión (ocupa todo el ancho)
+        // Panel SUR para el botón de cierre de sesión (ocupa todo el ancho del sistema)
         JPanel surPanel = new JPanel(new BorderLayout());
         surPanel.setBackground(new Color(33, 47, 65));
         surPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 15, 0)); // solo padding vertical
