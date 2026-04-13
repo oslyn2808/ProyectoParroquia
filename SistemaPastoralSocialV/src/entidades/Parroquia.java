@@ -3,6 +3,13 @@ package entidades;
 import javax.persistence.*;
 
 @Entity
+
+//NamedQuery para llamar el NOMBRE de todas las parroquias existentes en la base de datos
+@NamedQuery(
+        name = "Parroquia.findAll",
+        query = "SELECT p FROM Parroquia p"
+)
+
 @Table(name = "parroquia")
 public class Parroquia {
 
@@ -17,6 +24,8 @@ public class Parroquia {
     private String telefono;
     @Column(name = "email")
     private String correo;
+    @Column(name = "sector_filial")
+    private String sectorFilial;
     @Column(name = "codigo_acceso")
     private String codigoAcceso;
 
@@ -24,7 +33,7 @@ public class Parroquia {
     }
 
     public Parroquia(int idParroquia, String nombre, String provincia, String canton,
-                     String direccion, String telefono, String correo, String codigoAcceso) {
+                     String direccion, String telefono, String correo, String sectorFilial, String codigoAcceso) {
         this.idParroquia = idParroquia;
         this.nombre = nombre;
         this.provincia = provincia;
@@ -32,7 +41,9 @@ public class Parroquia {
         this.direccion = direccion;
         this.telefono = telefono;
         this.correo = correo;
+        this.sectorFilial = sectorFilial;
         this.codigoAcceso = codigoAcceso;
+
     }
 
     public int getIdParroquia() {
@@ -88,15 +99,26 @@ public class Parroquia {
     }
 
     public void setCorreo(String correo) {
+
         this.correo = correo;
     }
 
     public String getCodigoAcceso() {
+
         return codigoAcceso;
     }
 
     public void setCodigoAcceso(String codigoAcceso) {
+
         this.codigoAcceso = codigoAcceso;
+    }
+
+    public String getSectorFilial() {
+        return sectorFilial;
+    }
+
+    public void setSectorFilial(String sectorFilial) {
+        this.sectorFilial = sectorFilial;
     }
 
 	//Muestra los verdaderos nombres de las parroquias y no sus entidades
