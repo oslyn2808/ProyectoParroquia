@@ -31,7 +31,6 @@ public class EditarAdendumFrame extends JFrame {
     private JRadioButton[] rbSi = new JRadioButton[3];
     private JRadioButton[] rbNo = new JRadioButton[3];
     private JTextField[] txtFechaRecom = new JTextField[3];
-    private JTextField[] txtObservacionRecom = new JTextField[3];
 
     /////////////////////////////////
     /**
@@ -79,6 +78,7 @@ public class EditarAdendumFrame extends JFrame {
         JPanel secServicios = seccion("Pagos mensuales");
 
         JPanel subPublicos = subSeccion("Servicios públicos");
+        agregarEncabezadoFechas(subPublicos);
         crearFilaServicio(subPublicos, servicios[0], 0);
         crearFilaServicio(subPublicos, servicios[1], 1);
         crearFilaServicio(subPublicos, servicios[2], 2);
@@ -87,10 +87,12 @@ public class EditarAdendumFrame extends JFrame {
         secServicios.add(subPublicos);
 
         JPanel subVivienda = subSeccion("Gastos de vivienda");
+        agregarEncabezadoFechas(subVivienda);
         crearFilaServicio(subVivienda, servicios[5], 5);
         secServicios.add(subVivienda);
 
         JPanel subOtros = subSeccion("Otros gastos");
+        agregarEncabezadoFechas(subOtros);
         crearFilaServicio(subOtros, servicios[6], 6);
         crearFilaServicio(subOtros, servicios[7], 7);
         secServicios.add(subOtros);
@@ -116,9 +118,32 @@ public class EditarAdendumFrame extends JFrame {
         return scroll;
     }
 
+    /**
+     * Encabezado de fechas centrado
+     */
+    private void agregarEncabezadoFechas(JPanel parent) {
+        JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 2));
+        header.setOpaque(false);
+        header.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel espacio = new JLabel(" ");
+        espacio.setPreferredSize(new Dimension(130, 28));
+        header.add(espacio);
+
+        for (int j = 0; j < 3; j++) {
+            JLabel lblFecha = new JLabel("Fecha " + (j + 1));
+            lblFecha.setFont(new Font("Segoe UI", Font.BOLD, 12));
+            lblFecha.setForeground(Estilos.TEXTO);
+            lblFecha.setPreferredSize(new Dimension(100, 28));
+            lblFecha.setHorizontalAlignment(SwingConstants.CENTER);
+            header.add(lblFecha);
+        }
+        parent.add(header);
+    }
+
     /////////////////////////////////
     /**
-     * FILAS DE LOS SERVICIOS
+     * FILAS DE LOS SERVICIOS (sin etiquetas de fecha)
      */
     /////////////////////////////////
     private void crearFilaServicio(JPanel parent, String nombre, int idxServicio) {
@@ -128,24 +153,20 @@ public class EditarAdendumFrame extends JFrame {
 
         JLabel lblServicio = new JLabel(nombre);
         lblServicio.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        lblServicio.setPreferredSize(new Dimension(120, 28));
+        lblServicio.setPreferredSize(new Dimension(130, 28));
         fila.add(lblServicio);
 
         for (int j = 0; j < 3; j++) {
-            JPanel sub = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
-            sub.setOpaque(false);
-            sub.add(new JLabel("Fecha " + (j + 1) + ":"));
             fechas[idxServicio][j] = Estilos.campoTexto();
-            fechas[idxServicio][j].setPreferredSize(new Dimension(90, 28));
-            sub.add(fechas[idxServicio][j]);
-            fila.add(sub);
+            fechas[idxServicio][j].setPreferredSize(new Dimension(100, 28));
+            fila.add(fechas[idxServicio][j]);
         }
         parent.add(fila);
     }
 
     /////////////////////////////////
     /**
-     * FILAS DE LAS RECOMENDACIONES
+     * FILAS DE LAS RECOMENDACIONES (sin campo observación)
      */
     /////////////////////////////////
     private JPanel crearFilaRecomendacion(int idx) {
@@ -159,17 +180,13 @@ public class EditarAdendumFrame extends JFrame {
         g.add(rbNo[idx]);
 
         txtFechaRecom[idx] = Estilos.campoTexto();
-        txtFechaRecom[idx].setPreferredSize(new Dimension(90, 28));
-        txtObservacionRecom[idx] = Estilos.campoTexto();
-        txtObservacionRecom[idx].setPreferredSize(new Dimension(200, 28));
+        txtFechaRecom[idx].setPreferredSize(new Dimension(100, 28));
 
         fila.add(new JLabel("Recomendación " + (idx + 1) + ":"));
         fila.add(rbSi[idx]);
         fila.add(rbNo[idx]);
         fila.add(new JLabel("Fecha prevista:"));
         fila.add(txtFechaRecom[idx]);
-        fila.add(new JLabel("Observación:"));
-        fila.add(txtObservacionRecom[idx]);
 
         return fila;
     }
@@ -233,14 +250,15 @@ public class EditarAdendumFrame extends JFrame {
 
     /////////////////////////////////
     /**
-     * METODO PARA CARGAR LAS RECOMENDACIONES
+     * METODO PARA CARGAR LAS RECOMENDACIONES (sin observar observación)
      */
     /////////////////////////////////
     private void cargarRecomendaciones(String textoRecom) {
         if (textoRecom == null || textoRecom.trim().isEmpty()) return;
 
+        // Patrón sin "Obs:"
         Pattern pattern = Pattern.compile(
-                "Recomendación (\\d+): (Sí|No)(?: - Fecha: (\\d{2}/\\d{2}/\\d{4}))?(?: - Obs: (.*?))?(?:\n|$)",
+                "Recomendación (\\d+): (Sí|No)(?: - Fecha: (\\d{2}/\\d{2}/\\d{4}))?(?:\n|$)",
                 Pattern.DOTALL
         );
         Matcher matcher = pattern.matcher(textoRecom);
@@ -250,7 +268,6 @@ public class EditarAdendumFrame extends JFrame {
 
             String valor = matcher.group(2);
             String fecha = matcher.group(3);
-            String obs   = matcher.group(4);
 
             if ("Sí".equals(valor)) {
                 rbSi[idx].setSelected(true);
@@ -258,7 +275,6 @@ public class EditarAdendumFrame extends JFrame {
             } else {
                 rbNo[idx].setSelected(true);
             }
-            if (obs != null) txtObservacionRecom[idx].setText(obs.trim());
         }
     }
 
@@ -311,7 +327,7 @@ public class EditarAdendumFrame extends JFrame {
             actualizarFechasDesdeUI(adendum.getAlimentacion(),       fechas[6]);
             actualizarFechasDesdeUI(adendum.getMedicamentoMensual(), fechas[7]);
 
-            // Construir el nuevo texto de recomendación
+            // Construir el nuevo texto de recomendación (sin observación)
             StringBuilder rec = new StringBuilder();
             for (int i = 0; i < 3; i++) {
                 if (rbSi[i].isSelected() || rbNo[i].isSelected()) {
@@ -319,8 +335,6 @@ public class EditarAdendumFrame extends JFrame {
                     rec.append(rbSi[i].isSelected() ? "Sí" : "No");
                     String fecha = txtFechaRecom[i].getText().trim();
                     if (!fecha.isEmpty()) rec.append(" - Fecha: ").append(fecha);
-                    String obs = txtObservacionRecom[i].getText().trim();
-                    if (!obs.isEmpty()) rec.append(" - Obs: ").append(obs);
                     rec.append("\n");
                 }
             }
