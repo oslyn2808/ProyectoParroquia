@@ -165,8 +165,10 @@ public class ListaFormulariosFrame extends JFrame {
                 f.getIdFormulario(),
                 f.getFichaNumero() != null ? f.getFichaNumero() : "-",
                 f.getFechaInicio() != null ? sdf.format(f.getFechaInicio()) : "-",
-                nvl(f.getParroquia()),
-                nvl(f.getSectorFilial()),
+
+                    nvl(f.getParroquia() != null ? f.getParroquia().getNombre() : "-"),
+                    nvl(f.getParroquia() != null ? f.getParroquia().getSectorFilial() : null),
+
                 nvl(f.getDireccion()),
                 nvl(f.getTelefonoContacto()),
                 nvl(f.getNombreEntrevistador())
@@ -207,10 +209,10 @@ public class ListaFormulariosFrame extends JFrame {
         sb.append("Fecha Inicio:    ").append(f.getFechaInicio() != null ? sdf.format(f.getFechaInicio()) : "-").append("\n");
         sb.append("Fecha Conclusión:").append(f.getFechaConclusion() != null ? sdf.format(f.getFechaConclusion()) : "-").append("\n");
         sb.append("───────────────────────────────────────\n");
-        sb.append("Parroquia:       ").append(nvl(f.getParroquia())).append("\n");
-        sb.append("Sector/Filial:   ").append(nvl(f.getSectorFilial())).append("\n");
-        sb.append("Dirección:       ").append(nvl(f.getDireccion())).append("\n");
-        sb.append("Teléfono:        ").append(nvl(f.getTelefonoContacto())).append("\n");
+        sb.append("Parroquia:       ").append(nvl(f.getParroquia() != null ? f.getParroquia().getNombre() : null)).append("\n");
+        sb.append("Sector/Filial:   ").append(nvl(f.getParroquia() != null ? f.getParroquia().getSectorFilial() : null)).append("\n");
+        sb.append("Dirección:       ").append(nvl(f.getParroquia() != null ? f.getParroquia().getDireccion() : null)).append("\n");
+        sb.append("Teléfono:        ").append(nvl(f.getParroquia() != null ? f.getParroquia().getTelefono() : null)).append("\n");
         sb.append("───────────────────────────────────────\n");
         sb.append("Entrevistador:   ").append(nvl(f.getNombreEntrevistador())).append("\n");
         sb.append("Observaciones:   ").append(nvl(f.getObservaciones())).append("\n");

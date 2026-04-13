@@ -1,12 +1,14 @@
 package logicaNegocio;
 
-import entidades.AdendumExpediente; 
+import entidades.AdendumExpediente;
 import entidades.Formulario;
 import entidades.PersonaParticipante;  // ← Asegúrate de importar PersonaParticipante
 import entidades.Usuario;
+import entidades.Parroquia;
 import accesoDatos.UsuarioDAO;
 import accesoDatos.FormularioDAO;
 import accesoDatos.AdendumExpedienteDAO;
+import accesoDatos.ParroquiaDAO;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -156,7 +158,12 @@ public class SistemaService {
     	return "Informacion no disponible"; //si no se encuentra ninguna persona, se retorna esto.
     }
 
-    
+    private ParroquiaDAO parroquiaDAO = new ParroquiaDAO();
+
+    public List<Parroquia> listarParroquias() {
+
+        return parroquiaDAO.obtenerTodas();
+    }
     
     ///
     ///////////////////////////////////////////////

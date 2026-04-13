@@ -69,7 +69,7 @@ public class EntrevistaFrame extends JFrame {
             String fechaStr = f.getFechaInicio() != null ? sdf.format(f.getFechaInicio()) : "-";
             String observaciones = f.getObservaciones() != null ? f.getObservaciones() : "";
             String entrevistador = f.getNombreEntrevistador() != null ? f.getNombreEntrevistador() : "-";
-            String parroquia = f.getParroquia() != null ? f.getParroquia() : "-";
+            String parroquia = f.getParroquia() != null ? f.getParroquia().getNombre() : "-";
 
             modelo.addRow(new Object[]{
                     numeroFicha,

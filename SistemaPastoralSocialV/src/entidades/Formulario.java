@@ -62,11 +62,9 @@ public class Formulario {
     // 3. DATOS PARROQUIALES
     // ─────────────────────────────────────────────
 
-    @Column(name = "parroquia")
-    private String parroquia;
-
-    @Column(name = "sector_filial")
-    private String sectorFilial;
+    @ManyToOne
+    @JoinColumn(name = "id_parroquia")
+    private Parroquia parroquia;
 
     // ─────────────────────────────────────────────
     // 4. DATOS GENERALES
@@ -158,11 +156,13 @@ public class Formulario {
     public Date getProlongacion4() { return prolongacion4; }
     public void setProlongacion4(Date prolongacion4) { this.prolongacion4 = prolongacion4; }
 
-    public String getParroquia() { return parroquia; }
-    public void setParroquia(String parroquia) { this.parroquia = parroquia; }
-
-    public String getSectorFilial() { return sectorFilial; }
-    public void setSectorFilial(String sectorFilial) { this.sectorFilial = sectorFilial; }
+    public Parroquia getParroquia() {
+        return parroquia;
+    }
+    public void setParroquia(Parroquia parroquia) {
+        this.parroquia = parroquia;
+    }
+    
 
     public String getDireccion() { return direccion; }
     public void setDireccion(String direccion) { this.direccion = direccion; }

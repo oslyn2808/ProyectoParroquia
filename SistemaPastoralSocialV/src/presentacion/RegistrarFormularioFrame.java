@@ -19,7 +19,8 @@ public class RegistrarFormularioFrame extends JFrame {
 
     private JTextField txtFechaInicio, txtFechaConclusion;
     private JTextField txtProlongacion1, txtProlongacion2, txtProlongacion3, txtProlongacion4;
-    private JTextField txtParroquia, txtSectorFilial, txtDireccion, txtTelefono;
+    private JComboBox<Parroquia> comboParroquia;
+    private JTextField txtSectorFilial, txtDireccion, txtTelefono;
 
     private JTextField[] txtNombre     = new JTextField[10];
     private JTextField[] txtDocumento  = new JTextField[10];
@@ -64,6 +65,19 @@ public class RegistrarFormularioFrame extends JFrame {
 
         add(tabs, BorderLayout.CENTER);
         add(construirPiePagina(), BorderLayout.SOUTH);
+
+        // Cargar parroquias en el combo
+        cargarParroquias();
+
+        // Auto-completar campos al seleccionar una parroquia (más practico :b)
+        comboParroquia.addActionListener(e -> {
+            Object selected = comboParroquia.getSelectedItem();
+
+            if (selected instanceof Parroquia) {
+                Parroquia p = (Parroquia) selected;
+                txtSectorFilial.setText(p.getSectorFilial());
+            }
+        });
     }
 
     private JPanel construirEncabezado() {
@@ -110,7 +124,13 @@ public class RegistrarFormularioFrame extends JFrame {
         p.add(Box.createVerticalStrut(16));
 
         JPanel secParroquiales = seccion("Datos Parroquiales");
-        txtParroquia    = campo(secParroquiales, "Parroquia:");
+
+
+        //combo box de parroquia
+        comboParroquia = new JComboBox<>();
+        estiloCombo(comboParroquia);
+        addLabelCombo(secParroquiales, "Parroquia:", comboParroquia);
+
         txtSectorFilial = campo(secParroquiales, "Sector / Filial:");
         p.add(secParroquiales);
         p.add(Box.createVerticalStrut(16));
@@ -324,6 +344,7 @@ public class RegistrarFormularioFrame extends JFrame {
         return p;
     }
 
+
     // ================= MÉTODO PRINCIPAL CORREGIDO =================
     private void guardarFormulario() {
         try {
@@ -368,13 +389,16 @@ public class RegistrarFormularioFrame extends JFrame {
             f.setProlongacion4(parseDate(txtProlongacion4.getText()));
 
             // 4. PARROQUIA (obligatoria)
+
+            Parroquia seleccionada = (Parroquia) comboParroquia.getSelectedItem();
             System.out.println("Validando parroquia...");
-            if (txtParroquia.getText().trim().isEmpty()) {
-                mostrarError("El nombre de la parroquia es obligatorio.");
+
+            if (seleccionada == null) {
+                mostrarError("Debe seleccionar una parroquia.");
                 return;
             }
-            f.setParroquia(txtParroquia.getText().trim());
-            f.setSectorFilial(txtSectorFilial.getText().trim());
+
+            f.setParroquia(seleccionada);
 
             // 5. DIRECCION Y TELEFONO
             f.setDireccion(txtDireccion.getText().trim());
@@ -639,5 +663,15 @@ public class RegistrarFormularioFrame extends JFrame {
 
     private void mostrarError(String msg) {
         JOptionPane.showMessageDialog(this, msg, "Error de validación", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void cargarParroquias() {
+        List<Parroquia> lista = service.listarParroquias();
+
+        comboParroquia.removeAllItems();
+
+        for (Parroquia p : lista) {
+            comboParroquia.addItem(p);
+        }
     }
 }
