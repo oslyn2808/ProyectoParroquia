@@ -5,6 +5,7 @@ import entidades.Formulario;
 import logicaNegocio.SistemaService;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
@@ -122,6 +123,39 @@ public class ListarAdendumFrame extends JFrame {
         tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tabla.getTableHeader().setReorderingAllowed(false);
 
+        // Centrar el contenido de todas las celdas
+        DefaultTableCellRenderer centroRenderer = new DefaultTableCellRenderer();
+        centroRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < tabla.getColumnCount(); i++) {
+            tabla.getColumnModel().getColumn(i).setCellRenderer(centroRenderer);
+        }
+
+        // Renderizador especial para la columna "Estado" (índice 4) con color, negrita y centrado
+        tabla.getColumnModel().getColumn(4).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus,
+                                                           int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                // Centrar el texto
+                setHorizontalAlignment(JLabel.CENTER);
+                if (!isSelected) {
+                    String estado = (value != null) ? value.toString() : "";
+                    if ("ACTIVO".equals(estado)) {
+                        c.setForeground(new Color(0x2E7D32)); // Verde oscuro
+                    } else if ("INACTIVO".equals(estado)) {
+                        c.setForeground(new Color(0xD32F2F)); // Rojo intenso
+                    } else {
+                        c.setForeground(Color.BLACK);
+                    }
+                } else {
+                    c.setForeground(table.getSelectionForeground());
+                }
+                c.setFont(c.getFont().deriveFont(Font.BOLD)); // Negrita
+                return c;
+            }
+        });
+
         return new JScrollPane(tabla);
     }
 
@@ -134,10 +168,17 @@ public class ListarAdendumFrame extends JFrame {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         p.setBackground(Estilos.FONDO);
 
-        JButton btnEditar = Estilos.botonSecundario("Editar");
+        JButton btnEditar = Estilos.botonPrimario("Editar");
         btnEditar.addActionListener(e -> editar());
 
-        JButton btnCambiarEstado = Estilos.botonSecundario("Activar/Inactivar");
+        // Botón personalizado para Activar/Inactivar (color naranja, mismo tamaño que los otros)
+        JButton btnCambiarEstado = new JButton("Activar/Inactivar");
+        btnCambiarEstado.setBackground(new Color(255, 140, 0));
+        btnCambiarEstado.setForeground(Color.WHITE);
+        btnCambiarEstado.setFont(new Font(btnCambiarEstado.getFont().getFamily(), Font.BOLD, btnCambiarEstado.getFont().getSize()));
+        btnCambiarEstado.setFocusPainted(false);
+        // Mismo tamaño que los botones de Estilos (por ejemplo, 140x30)
+        btnCambiarEstado.setPreferredSize(new Dimension(140, 36));
         btnCambiarEstado.addActionListener(e -> cambiarEstado());
 
         JButton btnCerrar = Estilos.botonSecundario("Cerrar");
@@ -149,11 +190,7 @@ public class ListarAdendumFrame extends JFrame {
         return p;
     }
 
-    /////////////////////////////////
-    /*
-     * CARGAR FORMULARIOS EN EL COMBO
-     */
-    /////////////////////////////////
+    // Resto de métodos (sin cambios)
     private void cargarFormularios() {
         List<Formulario> formularios = service.listarFormularios();
         cmbFormularios.removeAllItems();
@@ -178,11 +215,6 @@ public class ListarAdendumFrame extends JFrame {
         cargarTodosAdendums();
     }
 
-    /////////////////////////////////
-    /*
-     * FILTRO 1: POR COMBOBOX
-     */
-    /////////////////////////////////
     private void cargarAdendumsPorCombo() {
         Object selected = cmbFormularios.getSelectedItem();
         if (selected instanceof Formulario) {
@@ -193,20 +225,12 @@ public class ListarAdendumFrame extends JFrame {
         poblarTabla();
     }
 
-    /////////////////////////////////
-    /*
-     * FILTRO 2: POR ID DE FORMULARIO (Named Query)
-     * Usa: AdendumExpediente.findByFormulario
-     */
-    /////////////////////////////////
     private void buscarPorIdFormulario() {
         String textoId = txtIdFormulario.getText().trim();
-
         if (textoId.isEmpty()) {
             Estilos.mostrarError(this, "Ingrese un ID de formulario para buscar.");
             return;
         }
-
         int idFormulario;
         try {
             idFormulario = Integer.parseInt(textoId);
@@ -215,35 +239,21 @@ public class ListarAdendumFrame extends JFrame {
             txtIdFormulario.requestFocus();
             return;
         }
-
-        // Llama al Named Query: AdendumExpediente.findByFormulario
         listaActual = service.listarAdendumPorFormularioId(idFormulario);
-
         if (listaActual.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                 "No se encontraron adéndums para el formulario con ID: " + idFormulario,
                 "Sin resultados",
                 JOptionPane.INFORMATION_MESSAGE);
         }
-
         poblarTabla();
     }
 
-    /////////////////////////////////
-    /*
-     * CARGAR TODOS SIN FILTRO
-     */
-    /////////////////////////////////
     private void cargarTodosAdendums() {
         listaActual = service.listarTodosAdendums();
         poblarTabla();
     }
 
-    /////////////////////////////////
-    /*
-     * POBLAR LA TABLA (método unificado - DRY)
-     */
-    /////////////////////////////////
     private void poblarTabla() {
         modelo.setRowCount(0);
         for (AdendumExpediente a : listaActual) {
@@ -263,11 +273,6 @@ public class ListarAdendumFrame extends JFrame {
         }
     }
 
-    /////////////////////////////////
-    /*
-     * EDITAR ADENDUM SELECCIONADO
-     */
-    /////////////////////////////////
     private void editar() {
         int fila = tabla.getSelectedRow();
         if (fila == -1) {
@@ -279,11 +284,6 @@ public class ListarAdendumFrame extends JFrame {
         poblarTabla();
     }
 
-    /////////////////////////////////
-    /*
-     * CAMBIAR ESTADO DEL ADENDUM
-     */
-    /////////////////////////////////
     private void cambiarEstado() {
         int fila = tabla.getSelectedRow();
         if (fila == -1) {

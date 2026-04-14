@@ -331,16 +331,15 @@ public class RegistrarFormularioFrame extends JFrame {
         p.setBackground(new Color(245, 247, 250));
         p.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(210, 220, 235)));
 
-        JButton btnCancelar = new JButton("Cancelar");
-        estiloBtnSecundario(btnCancelar);
-        btnCancelar.addActionListener(e -> dispose());
+        JButton btnCerrar = Estilos.botonSecundario("Cerrar");
+        btnCerrar.addActionListener(e -> dispose());
 
         JButton btnGuardar = new JButton("Guardar Formulario");
         estiloBtnPrimario(btnGuardar);
         btnGuardar.addActionListener(e -> guardarFormulario());
 
-        p.add(btnCancelar);
         p.add(btnGuardar);
+        p.add(btnCerrar);
         return p;
     }
 

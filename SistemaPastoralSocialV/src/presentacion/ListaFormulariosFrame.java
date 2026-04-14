@@ -143,11 +143,15 @@ public class ListaFormulariosFrame extends JFrame {
         btnNuevo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnNuevo.setPreferredSize(new Dimension(180, 36));
         btnNuevo.addActionListener(e -> new RegistrarFormularioFrame(service).setVisible(true));
+        
+        JButton btnCerrar = Estilos.botonSecundario("Cerrar");
+        btnCerrar.addActionListener(e -> dispose());
 
         p.add(lblTotal);
         p.add(btnDetalle);
         p.add(btnEliminar);
         p.add(btnNuevo);
+        p.add(btnCerrar);
 
         this.lblTotalRef = lblTotal;
         return p;

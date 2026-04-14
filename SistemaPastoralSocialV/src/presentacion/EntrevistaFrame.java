@@ -51,11 +51,15 @@ public class EntrevistaFrame extends JFrame {
     private JPanel pie() {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         p.setBackground(Estilos.FONDO);
+        
+        JButton btnCerrar = Estilos.botonSecundario("Cerrar");
+        btnCerrar.addActionListener(e -> dispose());
 
         JButton btnSeleccionar = Estilos.botonPrimario("Seleccionar");
         btnSeleccionar.addActionListener(e -> seleccionar());
 
         p.add(btnSeleccionar);
+        p.add(btnCerrar);
         return p;
     }
 
