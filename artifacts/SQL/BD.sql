@@ -1,2 +1,2 @@
 DROP DATABASE IF EXISTS pastoraldb;
-CREATE DATABASE pastoraldb;
+CREATE DATABASE pastoraldba
