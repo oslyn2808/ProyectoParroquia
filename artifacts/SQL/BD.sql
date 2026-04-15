@@ -1,15 +1,2 @@
 DROP DATABASE IF EXISTS pastoraldb;
 CREATE DATABASE pastoraldb;
-USE pastoraldb;
-
-CREATE TABLE usuario (
-    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(100) NOT NULL,
-    apellido VARCHAR(100) NOT NULL,
-    email VARCHAR(150) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    rol VARCHAR(50) NOT NULL
-);
-
-INSERT INTO usuario (nombre, apellido, email, password, rol)
-VALUES ('Oslyn', 'Test', 'admin@parroquia.com', '1234', 'ADMIN');
