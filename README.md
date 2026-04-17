@@ -16,7 +16,7 @@
 - Esneider Alonso Camacho Rodriguez  
 - Santiago Villalta Montero   — [GitHub](https://github.com/santivm0710-maker)  
 - Oslyn Delgado Rojas — [GitHub](https://github.com/oslyn2808)  
-- Juan Daniel Jiménez Hidalgo  
+- Juan Daniel Jiménez Hidalgo — [GitHub](https://github.com/JDanhy07)
 - David Cerdas Pérez — [LinkedIn](https://www.linkedin.com/in/david-j-cerdas-a56a6925/)  
 
 ---
