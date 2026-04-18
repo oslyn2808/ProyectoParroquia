@@ -13,6 +13,12 @@ public class LoginFrame extends JFrame {
     private JLabel lblError;
     private SistemaService service;
 
+    /////////////////////////////////
+    /**
+     * CONSTRUCTOR DEL FRAME
+     */
+    /////////////////////////////////
+    ///
     public LoginFrame(SistemaService service) {
         this.service = service;
         setTitle("Sistema Pastoral Social");
@@ -26,6 +32,12 @@ public class LoginFrame extends JFrame {
         add(panelDerecho(), BorderLayout.CENTER);
     }
 
+    /////////////////////////////////
+    /**
+     * PANEL IZQUIERDO DEL FRAME 
+     */
+    /////////////////////////////////
+    ///
     private JPanel panelIzquierdo() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setPreferredSize(new Dimension(340, 520));
@@ -66,6 +78,12 @@ public class LoginFrame extends JFrame {
         return panel;
     }
 
+    /////////////////////////////////
+    /**
+     * PANEL DERECHO DEL FRAME
+     */
+    /////////////////////////////////
+    ///
     private JPanel panelDerecho() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Estilos.FONDO);
@@ -111,7 +129,13 @@ public class LoginFrame extends JFrame {
         return panel;
     }
 
-    private void login() { //LOGIN acorde para la BD
+    /////////////////////////////////
+    /**
+     * MÉTODO PARA LOGIN
+     */
+    /////////////////////////////////
+    ///
+    private void login() { 
 
         String correo = txtCorreo.getText().trim();
         String password = new String(txtPassword.getPassword());

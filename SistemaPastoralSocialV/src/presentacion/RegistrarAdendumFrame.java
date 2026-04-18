@@ -30,6 +30,12 @@ public class RegistrarAdendumFrame extends JFrame {
     private JRadioButton[] rbNo = new JRadioButton[3];
     private JTextField[] txtFechaRecom = new JTextField[3];
 
+    /////////////////////////////////
+    /**
+     * CONSTRUCTOR DEL FRAME
+     */
+    /////////////////////////////////
+    ///
     public RegistrarAdendumFrame(SistemaService service, Formulario formulario) {
         this.service = service;
         this.formulario = formulario;
@@ -49,6 +55,12 @@ public class RegistrarAdendumFrame extends JFrame {
         setContentPane(root);
     }
 
+    /////////////////////////////////
+    /**
+     * CONTENIDO DEL FRAME
+     */
+    /////////////////////////////////
+    ///
     private JScrollPane contenido() {
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -108,7 +120,12 @@ public class RegistrarAdendumFrame extends JFrame {
         return scroll;
     }
 
-    // Encabezado con títulos de fechas en negrita 
+    /////////////////////////////////
+    /**
+     * MÉTODO PARA EL ENCABEZADO DE FECHAS
+     */
+    /////////////////////////////////
+    ///
     private void agregarEncabezadoFechas(JPanel parent) {
         JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 2));
         header.setOpaque(false);
@@ -129,7 +146,12 @@ public class RegistrarAdendumFrame extends JFrame {
         parent.add(header);
     }
 
-    // Fila de servicio (solo nombre y campos)
+    /////////////////////////////////
+    /**
+     * FILA DE SERVICIOS (nombres y campos) 
+     */
+    /////////////////////////////////
+    ///
     private void crearFilaServicio(JPanel parent, String nombre, int idxServicio) {
         JPanel fila = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 2));
         fila.setOpaque(false);
@@ -148,6 +170,12 @@ public class RegistrarAdendumFrame extends JFrame {
         parent.add(fila);
     }
 
+    /////////////////////////////////
+    /**
+     * MÉTODO PARA CREAR LAS FILAS DE RECOMENDACIÓN
+     */
+    /////////////////////////////////
+    ///
     private JPanel crearFilaRecomendacion(int idx) {
         JPanel fila = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 2));
         fila.setOpaque(false);
@@ -170,6 +198,12 @@ public class RegistrarAdendumFrame extends JFrame {
         return fila;
     }
 
+    /////////////////////////////////
+    /**
+     * MÉTODO PARA EL PIE DEL FRAME
+     */
+    /////////////////////////////////
+    ///
     private JPanel pie() {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 10));
         p.setBackground(new Color(240, 240, 240));
@@ -229,7 +263,7 @@ public class RegistrarAdendumFrame extends JFrame {
             a.setFechaAdendum(LocalDate.now());
             a.setInformacionAdicional(txtInfoAdicional.getText().trim());
             a.setObservaciones_adicionales(txtObservaciones.getText().trim());
-            a.setEstado("ACTIVO");
+            a.setEstado("ACTIVO"); //ponemos por default el estado ACTIVO
 
             cargarFechas(a.getElectricidad(),       fechas[0]);
             cargarFechas(a.getAgua(),               fechas[1]);
@@ -252,7 +286,7 @@ public class RegistrarAdendumFrame extends JFrame {
             }
             a.setRecomendacionAyuda(rec.toString().isEmpty() ? "Sin recomendación" : rec.toString());
 
-            service.guardarAdendum(a);
+            service.guardarAdendum(a); //guardamos el adendum con el service
 
             JOptionPane.showMessageDialog(this,
                 "Adendum guardado correctamente.\nID: " + a.getIdAdendum(),
@@ -271,6 +305,12 @@ public class RegistrarAdendumFrame extends JFrame {
         }
     }
 
+    /////////////////////////////////
+    /**
+     * MÉTODO PARA CARGAR CAMPOS DE FECHAS
+     */
+    /////////////////////////////////
+    ///
     private void cargarFechas(PagoMensualDetalle pago, JTextField[] fechasArr) {
         if (pago == null) return;
         for (int i = 0; i < 3; i++) {
@@ -286,6 +326,12 @@ public class RegistrarAdendumFrame extends JFrame {
         }
     }
 
+    /////////////////////////////////
+    /**
+     * SECCION DEL FRAME
+     */
+    /////////////////////////////////
+    ///
     private JPanel seccion(String titulo) {
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -299,6 +345,12 @@ public class RegistrarAdendumFrame extends JFrame {
         return p;
     }
 
+    /////////////////////////////////
+    /**
+     * SUBSECCIONES DEL FRAME
+     */
+    /////////////////////////////////
+    ///
     private JPanel subSeccion(String titulo) {
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));

@@ -118,9 +118,11 @@ public class EditarAdendumFrame extends JFrame {
         return scroll;
     }
 
+    /////////////////////////////////
     /**
-     * Encabezado de fechas centrado
+     * ENCABEZADO DE LAS FECHAS CENTRADAS
      */
+    /////////////////////////////////
     private void agregarEncabezadoFechas(JPanel parent) {
         JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 2));
         header.setOpaque(false);
@@ -143,9 +145,10 @@ public class EditarAdendumFrame extends JFrame {
 
     /////////////////////////////////
     /**
-     * FILAS DE LOS SERVICIOS (sin etiquetas de fecha)
+     * FILAS DE LOS SERVICIOS 
      */
     /////////////////////////////////
+    /// 
     private void crearFilaServicio(JPanel parent, String nombre, int idxServicio) {
         JPanel fila = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 2));
         fila.setOpaque(false);
@@ -166,7 +169,7 @@ public class EditarAdendumFrame extends JFrame {
 
     /////////////////////////////////
     /**
-     * FILAS DE LAS RECOMENDACIONES (sin campo observación)
+     * FILAS DE LAS RECOMENDACIONES 
      */
     /////////////////////////////////
     private JPanel crearFilaRecomendacion(int idx) {
@@ -250,7 +253,7 @@ public class EditarAdendumFrame extends JFrame {
 
     /////////////////////////////////
     /**
-     * METODO PARA CARGAR LAS RECOMENDACIONES (sin observar observación)
+     * METODO PARA CARGAR LAS RECOMENDACIONES 
      */
     /////////////////////////////////
     private void cargarRecomendaciones(String textoRecom) {
@@ -340,7 +343,7 @@ public class EditarAdendumFrame extends JFrame {
             }
             adendum.setRecomendacionAyuda(rec.toString().isEmpty() ? "Sin recomendación" : rec.toString());
 
-            service.actualizarAdendum(adendum);
+            service.actualizarAdendum(adendum); //Metodo final que actualiza el ADENDUM
 
             JOptionPane.showMessageDialog(this, "Adéndum actualizado correctamente.");
             dispose();

@@ -10,7 +10,7 @@ public class ParroquiaDAO extends GenericDAO<Parroquia> {
         super(Parroquia.class);
     }
 
-    //interactua con la base de datos para traer el nombre de la parroquia
+    //Interactua con la base de datos para traer el nombre de la parroquia
     public List<Parroquia> obtenerTodas() {
         EntityManager em = JPAUtil.getEntityManager();
         try {

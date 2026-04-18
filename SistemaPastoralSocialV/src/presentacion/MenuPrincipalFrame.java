@@ -9,6 +9,12 @@ public class MenuPrincipalFrame extends JFrame {
     private SistemaService service;
     private JPanel panelContenido;
 
+    /////////////////////////////////
+    /**
+     * CONSTRUCTOR DEL FRAME
+     */
+    /////////////////////////////////
+    ///
     public MenuPrincipalFrame(SistemaService service) {
         this.service = service;
         setTitle("Sistema Pastoral Social");
@@ -34,6 +40,12 @@ public class MenuPrincipalFrame extends JFrame {
         add(panelContenido, BorderLayout.CENTER);
     }
 
+    /////////////////////////////////
+    /**
+     * PANEL SUPERIOR DEL FRAME
+     */
+    /////////////////////////////////
+    ///
     private JPanel panelSuperior() {
         JPanel p = new JPanel(new BorderLayout());
         p.setBackground(Estilos.AZUL_OSCURO);
@@ -56,6 +68,12 @@ public class MenuPrincipalFrame extends JFrame {
         return p;
     }
 
+    /////////////////////////////////
+    /**
+     * PANEL LATERAL DEL FRAME (Secciones de Formularios y Adendums)
+     */
+    /////////////////////////////////
+    ///
     private JPanel panelLateral() {
         JPanel panelLateral = new JPanel(new BorderLayout());
         panelLateral.setPreferredSize(new Dimension(210, 0));
@@ -79,10 +97,10 @@ public class MenuPrincipalFrame extends JFrame {
 
         panelLateral.add(menuPanel, BorderLayout.CENTER);
 
-        // Panel SUR para el botón de cierre de sesión (ocupa todo el ancho del sistema)
+        // Panel SUR para el botón de cierre de sesión 
         JPanel surPanel = new JPanel(new BorderLayout());
         surPanel.setBackground(new Color(33, 47, 65));
-        surPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 15, 0)); // solo padding vertical
+        surPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 15, 0)); 
 
         JButton btnSalir = crearBotonSalida();
         surPanel.add(btnSalir, BorderLayout.CENTER);
@@ -92,6 +110,12 @@ public class MenuPrincipalFrame extends JFrame {
         return panelLateral;
     }
 
+    /////////////////////////////////
+    /**
+     * MÉTODO DEL BOTON DE CERRAR SESIÓN
+     */
+    /////////////////////////////////
+    ///
     private JButton crearBotonSalida() {
         JButton btn = new JButton("Cerrar Sesión");
         btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
@@ -129,6 +153,12 @@ public class MenuPrincipalFrame extends JFrame {
         return btn;
     }
 
+    /////////////////////////////////
+    /**
+     * SEPARADOR DEL FRAME
+     */
+    /////////////////////////////////
+    ///
     private JLabel separador(String texto) {
         JLabel lbl = new JLabel(texto);
         lbl.setFont(new Font("Segoe UI", Font.BOLD, 10));
@@ -138,6 +168,12 @@ public class MenuPrincipalFrame extends JFrame {
         return lbl;
     }
 
+    /////////////////////////////////
+    /**
+     * MÉTODO PARA LOS BOTONES DEL FRAME
+     */
+    /////////////////////////////////
+    ///
     private JButton botonMenu(String texto, Runnable accion) {
         JButton b = new JButton(texto);
         b.setAlignmentX(Component.LEFT_ALIGNMENT);

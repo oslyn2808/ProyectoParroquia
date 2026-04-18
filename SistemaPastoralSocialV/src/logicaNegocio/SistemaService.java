@@ -157,7 +157,17 @@ public class SistemaService {
     	
     	return "Informacion no disponible"; //si no se encuentra ninguna persona, se retorna esto.
     }
+    
+    
 
+    ///
+    ///////////////////////////////////////////////
+    /**
+     * Lógica del combobox de las Parroquias
+     */
+    ///////////////////////////////////////////////
+    /// 
+    
     private ParroquiaDAO parroquiaDAO = new ParroquiaDAO();
 
     public List<Parroquia> listarParroquias() {

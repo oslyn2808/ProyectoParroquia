@@ -45,6 +45,12 @@ public class RegistrarFormularioFrame extends JFrame {
     private JTextField txtEntrevistador;
     private JTextArea  txtObservaciones;
 
+    /////////////////////////////////
+    /**
+     * CONSTRUCTOR DEL FRAME
+     */
+    /////////////////////////////////
+    ///
     public RegistrarFormularioFrame(SistemaService service) {
         this.service = service;
         setTitle("Registrar Formulario de Asistencia Social");
@@ -69,7 +75,7 @@ public class RegistrarFormularioFrame extends JFrame {
         // Cargar parroquias en el combo
         cargarParroquias();
 
-        // Auto-completar campos al seleccionar una parroquia (más practico :b)
+        // Auto-completar campos al seleccionar una parroquia 
         comboParroquia.addActionListener(e -> {
             Object selected = comboParroquia.getSelectedItem();
 
@@ -80,6 +86,12 @@ public class RegistrarFormularioFrame extends JFrame {
         });
     }
 
+    /////////////////////////////////
+    /**
+     * ENCABEZADO DEL FRAME
+     */
+    /////////////////////////////////
+    ///
     private JPanel construirEncabezado() {
         JPanel p = new JPanel(new BorderLayout());
         p.setBackground(Estilos.AZUL_OSCURO);
@@ -91,6 +103,12 @@ public class RegistrarFormularioFrame extends JFrame {
         return p;
     }
 
+    /////////////////////////////////
+    /**
+     * PRIMERA SECCIÓN DEL REGISTRO
+     */
+    /////////////////////////////////
+    ///
     private JScrollPane construirTabRegistro() {
         JPanel p = new JPanel();
         p.setBackground(Estilos.FONDO);
@@ -143,6 +161,12 @@ public class RegistrarFormularioFrame extends JFrame {
         return wrapScroll(p);
     }
 
+    /////////////////////////////////
+    /**
+     * SEGUNDA SECCIÓN DEL REGISTRO (tabla de las personas)
+     */
+    /////////////////////////////////
+    ///
     private JPanel construirTabPersonas() {
         String[] cols = {"Nombre Completo", "Documento de Identidad", "Sexo", "Jefatura",
                          "Relacion", "Edad", "Pais", "Migracion", "Educacion", "Salud", "Seguro"};
@@ -207,6 +231,12 @@ public class RegistrarFormularioFrame extends JFrame {
         return wrap;
     }
 
+    /////////////////////////////////
+    /**
+     * TERCERA SECCIÓN DEL REGISTRO (tabla de ingresos y datos vivienda)
+     */
+    /////////////////////////////////
+    ///
     private JScrollPane construirTabViviendaIngresos() {
         JPanel p = new JPanel();
         p.setBackground(Estilos.FONDO);
@@ -268,6 +298,12 @@ public class RegistrarFormularioFrame extends JFrame {
         return wrapScroll(p);
     }
 
+    /////////////////////////////////
+    /**
+     * CUARTA SECCIÓN DE LA TABLA DE ASISTENCIA 
+     */
+    /////////////////////////////////
+    ///
     private JScrollPane construirTabAsistencia() {
         JPanel p = new JPanel();
         p.setBackground(Estilos.FONDO);
@@ -296,6 +332,12 @@ public class RegistrarFormularioFrame extends JFrame {
         return wrapScroll(p);
     }
 
+    /////////////////////////////////
+    /**
+     * QUINTA SECCIÓN DEL REGISTRO (nombre del entrevistador y observaciones)
+     */
+    /////////////////////////////////
+    ///
     private JScrollPane construirTabFinal() {
         JPanel p = new JPanel();
         p.setBackground(Estilos.FONDO);
@@ -326,6 +368,12 @@ public class RegistrarFormularioFrame extends JFrame {
         return wrapScroll(p);
     }
 
+    /////////////////////////////////
+    /**
+     * MÉTODO PARA PIE DEL FRAME
+     */
+    /////////////////////////////////
+    ///
     private JPanel construirPiePagina() {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.RIGHT, 14, 10));
         p.setBackground(new Color(245, 247, 250));
@@ -344,13 +392,19 @@ public class RegistrarFormularioFrame extends JFrame {
     }
 
 
-    // ================= MÉTODO PRINCIPAL CORREGIDO =================
+    /////////////////////////////////
+    /**
+     * MÉTODO PARA GUARDAR FORMULARIO
+     */
+    /////////////////////////////////
+    ///
     private void guardarFormulario() {
         try {
             System.out.println("=== INICIANDO GUARDADO ===");
             Formulario f = new Formulario();
 
             // 1. FECHA INICIO
+            
             System.out.println("Validando fecha inicio...");
             if (txtFechaInicio.getText().trim().isEmpty()) {
                 mostrarError("La fecha de inicio es obligatoria.");
@@ -367,7 +421,8 @@ public class RegistrarFormularioFrame extends JFrame {
             }
             f.setFechaInicio(fechaInicio);
 
-            // 2. FECHA CONCLUSION (opcional)
+            // 2. FECHA CONCLUSION 
+            
             if (!txtFechaConclusion.getText().trim().isEmpty()) {
                 Date fechaConclusion = parseDate(txtFechaConclusion.getText());
                 if (fechaConclusion == null) {
@@ -388,7 +443,7 @@ public class RegistrarFormularioFrame extends JFrame {
             f.setProlongacion4(parseDate(txtProlongacion4.getText()));
 
             // 4. PARROQUIA (obligatoria)
-
+            
             Parroquia seleccionada = (Parroquia) comboParroquia.getSelectedItem();
             System.out.println("Validando parroquia...");
 
@@ -400,6 +455,7 @@ public class RegistrarFormularioFrame extends JFrame {
             f.setParroquia(seleccionada);
 
             // 5. DIRECCION Y TELEFONO
+            
             f.setDireccion(txtDireccion.getText().trim());
             String telefono = txtTelefono.getText().trim();
             if (!telefono.isEmpty() && !telefono.matches("\\d{8,15}")) {
@@ -408,7 +464,8 @@ public class RegistrarFormularioFrame extends JFrame {
             }
             f.setTelefonoContacto(telefono);
 
-         // 6. CONSTRUIR PERSONAS
+            // 6. CONSTRUIR LISTA DE PERSONAS
+            
             System.out.println("Construyendo lista de personas...");
             List<PersonaParticipante> personas = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
@@ -455,7 +512,7 @@ public class RegistrarFormularioFrame extends JFrame {
                 // IMPORTANTE: establecer la relación inversa
                 p.setFormulario(f);
                 
-                personas.add(p);
+                personas.add(p); //método para agregar las personas participantes
             }
 
             if (personas.isEmpty()) {
@@ -546,7 +603,7 @@ public class RegistrarFormularioFrame extends JFrame {
 
             // 11. GUARDAR
             System.out.println("Llamando al servicio para guardar...");
-            String error = service.registrarFormulario(f);
+            String error = service.registrarFormulario(f); //GUARDAMOS EL FORMULARIO 
             if (error != null) {
                 mostrarError(error);
                 System.out.println("Error devuelto por servicio: " + error);
@@ -562,7 +619,12 @@ public class RegistrarFormularioFrame extends JFrame {
         }
     }
 
-    // ================= MÉTODOS AUXILIARES =================
+    /////////////////////////////////
+    /**
+     * MÉTODOS DISEÑO DEL FRAME 
+     */
+    /////////////////////////////////
+    ///
     private JPanel seccion(String titulo) {
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -634,14 +696,6 @@ public class RegistrarFormularioFrame extends JFrame {
         b.setFocusPainted(false); b.setBorderPainted(false);
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         b.setPreferredSize(new Dimension(200, 38));
-    }
-
-    private void estiloBtnSecundario(JButton b) {
-        b.setBackground(new Color(230, 235, 245)); b.setForeground(Estilos.TEXTO_GRIS);
-        b.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        b.setFocusPainted(false); b.setBorderPainted(false);
-        b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        b.setPreferredSize(new Dimension(110, 38));
     }
 
     private JScrollPane wrapScroll(JPanel p) {

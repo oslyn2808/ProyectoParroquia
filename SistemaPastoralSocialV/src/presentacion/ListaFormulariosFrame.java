@@ -16,6 +16,12 @@ public class ListaFormulariosFrame extends JFrame {
     private DefaultTableModel modeloTabla;
     private JTable tabla;
 
+    /////////////////////////////////
+    /**
+     * CONSTRUCTOR DEL FRAME
+     */
+    /////////////////////////////////
+    ///
     public ListaFormulariosFrame(SistemaService service) {
         this.service = service;
         setTitle("Formularios de Asistencia Social");
@@ -31,6 +37,11 @@ public class ListaFormulariosFrame extends JFrame {
         cargarDatos();
     }
 
+    /////////////////////////////////
+    /**
+     * ENCABEZADO DEL FRAME
+     */
+    /////////////////////////////////
     private JPanel construirEncabezado() {
         JPanel p = new JPanel(new BorderLayout());
         p.setBackground(Estilos.AZUL_OSCURO);
@@ -45,6 +56,11 @@ public class ListaFormulariosFrame extends JFrame {
         return p;
     }
 
+    /////////////////////////////////
+    /**
+     *  CUERPO DEL FRAME
+     */
+    /////////////////////////////////
     private JPanel construirCuerpo() {
         String[] columnas = {
             "ID", "Ficha N°", "Fecha Inicio", "Parroquia",
@@ -105,6 +121,11 @@ public class ListaFormulariosFrame extends JFrame {
         return p;
     }
 
+    /////////////////////////////////
+    /**
+     * PIE DEL FRAME
+     */
+    /////////////////////////////////
     private JPanel construirPie() {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.RIGHT, 14, 10));
         p.setBackground(new Color(245, 247, 250));
@@ -159,6 +180,11 @@ public class ListaFormulariosFrame extends JFrame {
 
     private JLabel lblTotalRef;
 
+    /////////////////////////////////
+    /**
+     * METODO PARA CARGAR LOS FORMULARIOS
+     */
+    /////////////////////////////////
     private void cargarDatos() {
         modeloTabla.setRowCount(0);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -183,7 +209,11 @@ public class ListaFormulariosFrame extends JFrame {
             lblTotalRef.setText("Total: " + lista.size() + " formulario(s)   ");
     }
 
-    // ── Ver detalle del formulario seleccionado ──
+    /////////////////////////////////
+    /**
+     *MÉTODO PARA VER EL DETALLE DEL FORMULARIO
+     */
+    /////////////////////////////////
     private void verDetalle() {
         int fila = tabla.getSelectedRow();
         if (fila < 0) {
@@ -235,6 +265,11 @@ public class ListaFormulariosFrame extends JFrame {
             JOptionPane.PLAIN_MESSAGE);
     }
 
+    /////////////////////////////////
+    /**
+     * METODO PARA ELIMINAR EL FORMULARIO SELECCIONADO
+     */
+    /////////////////////////////////
     private void eliminarSeleccionado() {
         int fila = tabla.getSelectedRow();
         if (fila < 0) {
@@ -253,9 +288,10 @@ public class ListaFormulariosFrame extends JFrame {
             JOptionPane.YES_NO_OPTION,
             JOptionPane.WARNING_MESSAGE);
 
-        if (confirm != JOptionPane.YES_OPTION) return;
+        if (confirm != JOptionPane.YES_OPTION) return; // si la opción es NO, detiene el metodo
 
-        Formulario f = service.buscarFormularioPorId(id);
+        //Método que busca el formulario por el ID
+        Formulario f = service.buscarFormularioPorId(id); 
         if (f == null) {
             JOptionPane.showMessageDialog(this,
                 "No se encontró el formulario.", "Error",
@@ -265,9 +301,9 @@ public class ListaFormulariosFrame extends JFrame {
 
         String error = service.eliminarFormulario(f);
         if (error != null) {
-            JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE); // en caso de error al eliminar el Formulario con el service.
         } else {
-            modeloTabla.removeRow(fila);
+            modeloTabla.removeRow(fila); //actualizar la tabla
             if (lblTotalRef != null)
                 lblTotalRef.setText("Total: " + modeloTabla.getRowCount() + " formulario(s)   ");
             JOptionPane.showMessageDialog(this,
@@ -276,6 +312,7 @@ public class ListaFormulariosFrame extends JFrame {
         }
     }
 
+    //Se usan para evitar valores null o vacíos, reemplazándolos por un guión ("-").
     private String nvl(String s) {
         return (s == null || s.trim().isEmpty()) ? "-" : s;
     }
