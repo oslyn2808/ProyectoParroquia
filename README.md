@@ -120,7 +120,7 @@ presentacion.MainApp
 ### 7. Cargar datos semilla
 
 ```bash
-mysql -u root < artifacts/SQL/InsertParroquias.sql
+mysql -u root < artifacts/SQL/Seed1ParroquiasUsuarioAdmin.sql
 ```
 
 ---
